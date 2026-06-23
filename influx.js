@@ -1,4 +1,4 @@
-// ── CONFIGURAÇÃO DA API (Node-RED) ──────────────────────
+// ── CONFIGURAÇÃO DA API (Node RED) ──────────────────────
 // O frontend NUNCA fala direto com o InfluxDB nem guarda o token.
 // O Node-RED faz a query no InfluxDB e devolve os dados já em JSON.
 const API_CONFIG = {
