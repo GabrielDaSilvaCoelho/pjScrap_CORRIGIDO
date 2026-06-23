@@ -19,7 +19,7 @@ const state = {
   setInterval(tick, 1000);
 })();
 
-// ── UI: FEEDBACK ────────────────────────────────────────
+// ── UI:FEEDBACK ────────────────────────────────────────
 function showLoading(msg = 'Carregando dados do InfluxDB…') {
   const empty = document.getElementById('empty');
   empty.style.display = 'block';
