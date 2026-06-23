@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TRIADE · Fracionamento de Ingredientes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+<style>@keyframes spin{to{transform:rotate(360deg)}}.page-ellipsis{display:flex;align-items:center;justify-content:center;width:34px;height:34px;font-size:13px;color:#888;}</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon" id="logo-container">
+      
+      <img src="logo.jpeg" alt="Logo"
+           onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex'"/>
+      <span class="logo-letter" id="logo-fallback" style="display:none">T</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <span id="clock"></span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR FILTROS -->
+  <aside class="sidebar">
+    <div class="sidebar-title">
+      <span>Relatório de Filtros</span>
+      <span class="filter-icon">▽</span>
+    </div>
+
+    <div class="filter-group">
+      <label>FÓRMULA</label>
+      <select id="f-formula">
+        <option value="">Todas</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>INGREDIENTE</label>
+      <select id="f-ingrediente">
+        <option value="">Todos</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>RESPONSÁVEL</label>
+      <select id="f-responsavel">
+        <option value="">Todos</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>TIPO DE INSUMO</label>
+      <select id="f-alerg">
+        <option value="">Todos</option>
+        <option value="alergenico">Somente Alérgênicos</option>
+        <option value="nao">Somente Não Alérgênicos</option>
+      </select>
+    </div>
+
+    <div class="filter-row">
+      <div class="filter-group">
+        <label>LOTE</label>
+        <input type="text" id="f-lote" placeholder="LT2025K01"/>
+      </div>
+      <div class="filter-group">
+        <label>ID BATCH</label>
+        <input type="text" id="f-batch" placeholder="ID BD0417"/>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label>PERÍODO DE VALIDADE</label>
+      <label>
+        (DATA FAB. / VALIDADE)</label>
+      <div class="date-range">
+        <div class="date-sub">
+          <span class="date-lbl">De:</span>
+          <input type="date" id="f-val-de"/>
+        </div>
+        <div class="date-sub">
+          <span class="date-lbl">Até:</span>
+          <input type="date" id="f-val-ate"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label>TURNO</label>
+      <select id="f-turno">
+        <option value="">Todos</option>
+        <option value="1">Turno 1 · 06:30 – 14:29</option>
+        <option value="2">Turno 2 · 14:30 – 22:29</option>
+        <option value="3">Turno 3 · 22:30 – 06:29</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>HORA DA FABRICAÇÃO</label>
+      <div class="date-range">
+        <div class="date-sub">
+          <span class="date-lbl">De:</span>
+          <input type="datetime-local" id="f-hora-de"/>
+        </div>
+        <div class="date-sub">
+          <span class="date-lbl">Até:</span>
+          <input type="datetime-local" id="f-hora-ate"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-actions">
+      <button class="btn-apply" onclick="applyFilters()">Aplicar Filtros</button>
+      <button class="btn-clear" onclick="clearFilters()">Limpar</button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="main-header">
+      <h1>Painel de Fracionamento de Ingredientes</h1>
+    </div>
+
+    <!-- CARDS DE ESTATÍSTICAS -->
+    <div class="stats-row">
+      <div class="stat-card stat-total">
+        <div class="stat-inner">
+          <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          <div>
+            <div class="stat-label">TOTAL REGISTROS</div>
+            <div class="stat-value" id="st-total">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card stat-alerg">
+        <div class="stat-inner">
+          <svg class="stat-icon icon-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div>
+            <div class="stat-label">LOTES ALÉRGÊNICOS</div>
+            <div class="stat-value red" id="st-alerg">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card stat-nao">
+        <div class="stat-inner">
+          <svg class="stat-icon icon-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div>
+            <div class="stat-label">LOTES NÃO ALÉRGÊNICOS</div>
+            <div class="stat-value green" id="st-nao">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABELA -->
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>ID BATCH <span class="sort-arrow">⇅</span></th>
+              <th>FÓRMULA <span class="sort-arrow">⇅</span></th>
+              <th>INGREDIENTE</th>
+              <th>CÓDIGO</th>
+              <th>LOTE</th>
+              <th>DATA FAB.</th>
+              <th>VALIDADE</th>
+              <th>PESAGEM (KG)</th>
+              <th>TIPO DE INSUMO</th>
+              <th>RESPONSÁVEL</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+
+        <div id="empty" class="empty-state" style="display:none">
+          <p>Nenhum registro encontrado para os filtros aplicados.</p>
+        </div>
+      </div>
+
+      <div class="table-footer">
+        <div class="per-page">
+          Itens por página:
+          <select id="per-page-select" onchange="changePerPage()">
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+        <div class="pagination">
+          <button class="page-btn" id="btn-prev" onclick="changePage(-1)">‹</button>
+          <span id="page-numbers"></span>
+          <button class="page-btn" id="btn-next" onclick="changePage(1)">›</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="scrapApi.js"></script>
+<script src="influx.js"></script>
+<script src="filters.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
