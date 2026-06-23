@@ -1,4 +1,4 @@
-// ── CONFIGURAÇÃO DO INFLUXDB v2 ─────────────────────────
+// ── CONFIGURAÇÃO DO INFLUXDB ─────────────────────────
 const INFLUX_CONFIG = {
   host:        'http://18.220.119.76:8086',
   org:         'TriadeAndroid',
