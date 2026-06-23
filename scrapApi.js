@@ -1,4 +1,4 @@
-/**
+/*
  * scrapApi.js
  * Camada de acesso à API REST do Node-RED (Scrap Balanças).
  *
