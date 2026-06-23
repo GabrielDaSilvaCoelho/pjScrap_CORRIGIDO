@@ -8,7 +8,7 @@ const API_CONFIG = {
   limit:    5000,
 };
 
-/**
+/*
  * Busca todos os dados via API do Node-RED e retorna os registros prontos para uso.
  * @returns {Promise<Object[]>}
  */
