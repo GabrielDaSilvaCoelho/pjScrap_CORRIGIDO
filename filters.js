@@ -1,7 +1,6 @@
 /**
  * Regras de negócio do painel de fracionamento.
  * Não acessa o DOM — só recebe dados e retorna dados.
- *
  * VERSAO_FILTRO: v3-sem-pesagem-zero-sem-batch-duplicado
  */
 
